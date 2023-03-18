@@ -8,7 +8,7 @@ export const userRepository = {
         return await userCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()
     },
 
-    async getTotalCount(filter: any){
+    async getTotalCount(filter: any):Promise<number>{
         return await userCollections.countDocuments(filter)
     },
 

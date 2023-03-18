@@ -1,35 +1,36 @@
 import {postRepository} from "../repositories/post-repository";
-import {DefaultValueListType, PostResponseType, QueryForBlogsType} from "../types";
+import {PostRequestType, PostResponseType, QueryForBlogsType, ResponseTypeWithPages} from "../types";
 import {blogService} from "./blog-service";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
-
-const DEFAULT_VALUE_LIST: DefaultValueListType = {
-    FIELD_FOR_SORT: "createdAt",
-    SORT_DIRECTION: "desc",
-    PAGE_NUMBER: 1,
-    PAGE_SIZE: 10
-}
+import {postModels} from "../models/post-models";
 
 
 export const postService = {
-    async getAllPosts(query: QueryForBlogsType) {
-        const  {pageNumber, pageSize}  = query
+    async getAllPosts(query: QueryForBlogsType):Promise<ResponseTypeWithPages<PostResponseType>> {
+        const {pageNumber, pageSize} = query
         const filter: any = {}
         const totalCount = await postRepository.getTotalCount(filter)
-        const [sort, skip, limit ] = await getSortSkipLimit(query)
+        const [sort, skip, limit] = await getSortSkipLimit(query)
+        const posts = await postRepository.getAllPosts(filter, sort, skip, +limit)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: await postRepository.getAllPosts(filter, sort, skip, +limit)
+            items: postModels(posts) as PostResponseType[]
         }
     },
+
     async getPostById(id: string): Promise<PostResponseType | null> {
         const filter = {id: id}
-        return await postRepository.getPostById(filter)
+        const post = await postRepository.getPostById(filter)
+        if (post) {
+            return postModels(post) as PostResponseType
+        }
+        return null
     },
-    async createPost(post: PostResponseType) {
+
+    async createPost(post: PostRequestType): Promise<PostResponseType> {
         const findBlog = await blogService.getBlogById(post.blogId)
         const newPost = {
             id: (+(new Date())).toString(),
@@ -42,9 +43,10 @@ export const postService = {
             createdAt: new Date().toISOString()
         }
         await postRepository.createPost(newPost)
-        return newPost
+        return postModels(newPost) as PostResponseType
     },
-    async changePost(id:string, post: PostResponseType) {
+
+    async changePost(id: string, post: PostResponseType):Promise<boolean> {
         const {title, blogId, content, shortDescription} = post
         const findBlog = await blogService.getBlogById(post.blogId)
         const filter = {id}
@@ -57,10 +59,11 @@ export const postService = {
                 content,
                 shortDescription
             }
-        } as {$set : PostResponseType}
+        } as { $set: PostResponseType }
         return await postRepository.changePost(filter, update)
     },
-   async deletePost(id: string):Promise<boolean>{
+
+    async deletePost(id: string): Promise<boolean> {
         return await postRepository.deletePost(id)
     }
 }

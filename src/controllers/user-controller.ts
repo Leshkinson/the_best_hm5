@@ -2,7 +2,6 @@ import {Request, Response} from "express";
 import {DefaultValueListType} from "../types";
 import {HTTP_STATUSES} from "../http_statuses";
 import {userService} from "../services/user-service";
-import {userModels} from "../models/user-models";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
     FIELD_FOR_SORT: "createdAt",

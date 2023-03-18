@@ -1,7 +1,6 @@
 import {Request, Response} from "express";
 import {postService} from "../services/post-service";
 import {HTTP_STATUSES} from "../http_statuses";
-import {postModels} from "../models/post-models";
 import {DefaultValueListType} from "../types";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
@@ -22,22 +21,23 @@ export const postController = {
        }
 
        const posts = await postService.getAllPosts(query)
-       res.status(HTTP_STATUSES.OK200).send(postModels(posts))
+       res.status(HTTP_STATUSES.OK200).send(posts)
     },
     async getPostById(req: Request, res: Response){
         const findPost = await postService.getPostById(req.params.id)
         if (findPost) {
-            res.status(HTTP_STATUSES.OK200).send(postModels(findPost))
+            res.status(HTTP_STATUSES.OK200).send(findPost)
         } else {
             res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
     async createPost(req: Request, res: Response){
         const newPost = await postService.createPost(req.body)
-        res.status(HTTP_STATUSES.CREATED_201).send(postModels(newPost))
+        res.status(HTTP_STATUSES.CREATED_201).send(newPost)
     },
     async  changePost(req: Request, res: Response){
         const isChangePost = await postService.changePost(req.params.id, req.body)
+        console.log('isChangePost', isChangePost)
         if (isChangePost) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {

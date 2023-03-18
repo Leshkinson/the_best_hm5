@@ -16,22 +16,24 @@ export type UserResponseFromDBType = UserResponseType & {
     hash: string
 }
 
-export type InitPostType = {
+export type PostType = {
     title: string,
     shortDescription: string,
     content: string
 }
 
-export type PostRequestType = InitPostType & {
+export type PostRequestType = PostType & {
     blogId: string
 }
 
-export type PostResponseType = InitPostType & {
+export type PostResponseType = PostType & {
     id: string
     blogId: string
     blogName: string
     createdAt: string
 }
+
+
 
 
 
@@ -43,13 +45,6 @@ export type BlogType = {
     isMembership: boolean
     createdAt: string
 }
-
-
-
-
-
-
-
 
 export type QueryForBlogsType = {
     pageNumber: number
