@@ -11,6 +11,7 @@ const DEFAULT_VALUE_LIST: DefaultValueListType = {
 }
 
 export const userController = {
+
     async getAllUsers(req: Request, res: Response) {
         const query = {
             pageNumber: Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
@@ -22,6 +23,7 @@ export const userController = {
         const users = await userService.getAllUsers(query)
         res.status(HTTP_STATUSES.OK200).send(users)
     },
+
     async createUser(req: Request, res: Response) {
         const newUser = await userService.createUser(req.body)
         res.status(HTTP_STATUSES.CREATED_201).send(newUser)

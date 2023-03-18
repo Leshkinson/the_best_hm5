@@ -1,25 +1,25 @@
-import {BlogType} from "../types";
+import {BlogResponseType} from "../types";
 import {blogCollections} from "../../mongoDB";
 
 export const blogRepository = {
 
-    async getAllBlogs(filter: any, sort: any, skip: any, limit: any): Promise<any> {
+    async getAllBlogs(filter: any, sort: any, skip: any, limit: any): Promise<BlogResponseType[]> {
         return await blogCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()
     },
 
-    async getBlogById(id: { id: string }): Promise<BlogType | null> {
+    async getBlogById(id: { id: string }): Promise<BlogResponseType | null> {
         return blogCollections.findOne(id)
     },
 
-    async getTotalCount(filter: any) {
+    async getTotalCount(filter: any):Promise<number> {
         return await blogCollections.countDocuments(filter)
     },
 
-    async createBlog(newBlog: BlogType): Promise<void> {
+    async createBlog(newBlog: BlogResponseType): Promise<void> {
         await blogCollections.insertOne(newBlog)
     },
 
-    async changeBlog(id: { id: string }, updateBLog: { $set: BlogType }): Promise<boolean> {
+    async changeBlog(id: { id: string }, updateBLog: { $set: BlogResponseType }): Promise<boolean> {
         const result = await blogCollections.updateOne(id, updateBLog)
         return result.matchedCount === 1;
 
@@ -30,7 +30,7 @@ export const blogRepository = {
         return result.deletedCount === 1
     },
 
-    async deleteAllBlogs() {
+    async deleteAllBlogs():Promise<void> {
         await blogCollections.deleteMany({})
     }
 }

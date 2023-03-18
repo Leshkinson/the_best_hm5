@@ -2,8 +2,6 @@ import {blogService} from "../services/blog-service";
 import {Request, Response} from "express";
 import {DefaultValueListType} from "../types";
 import {HTTP_STATUSES} from "../http_statuses";
-import {blogModels} from "../models/blog-models";
-import {postModels} from "../models/post-models";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
     FIELD_FOR_SORT: "createdAt",
@@ -14,50 +12,49 @@ const DEFAULT_VALUE_LIST: DefaultValueListType = {
 
 export const blogController = {
     async getAllBlogs(req: Request, res: Response) {
-        const query =  {
-            pageNumber : Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
-            pageSize : Number(req.query.pageSize ||  DEFAULT_VALUE_LIST.PAGE_SIZE),
-            sortBy : req.query.sortBy as string  ||  DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
-            searchNameTerm : req.query.searchNameTerm  as string  ||  "",
-            sortDirection : req.query.sortDirection as string ||  DEFAULT_VALUE_LIST.SORT_DIRECTION
+        const query = {
+            pageNumber: Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
+            pageSize: Number(req.query.pageSize || DEFAULT_VALUE_LIST.PAGE_SIZE),
+            sortBy: req.query.sortBy as string || DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
+            searchNameTerm: req.query.searchNameTerm as string || "",
+            sortDirection: req.query.sortDirection as string || DEFAULT_VALUE_LIST.SORT_DIRECTION
         }
-        const blogs =  await blogService.getBlogs(query)
-        res.status(HTTP_STATUSES.OK200).send(blogModels(blogs))
+        const blogs = await blogService.getBlogs(query)
+        res.status(HTTP_STATUSES.OK200).send(blogs)
     },
 
-   async getBlogById(req: Request, res: Response){
+    async getBlogById(req: Request, res: Response) {
         const findBlog = await blogService.getBlogById(req.params.id)
         if (findBlog) {
-            res.status(HTTP_STATUSES.OK200).send(blogModels(findBlog))
+            res.status(HTTP_STATUSES.OK200).send(findBlog)
         } else {
             res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
 
-    async getAllBlogPosts(req: Request, res: Response){
-        const query =  {
-            pageNumber : Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
-            pageSize : Number(req.query.pageSize ||  DEFAULT_VALUE_LIST.PAGE_SIZE),
-            sortBy : req.query.sortBy as string  ||  DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
-            searchNameTerm : req.query.searchNameTerm  as string  ||  "",
-            sortDirection : req.query.sortDirection as string ||  DEFAULT_VALUE_LIST.SORT_DIRECTION
+    async getAllBlogPosts(req: Request, res: Response) {
+        const query = {
+            pageNumber: Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
+            pageSize: Number(req.query.pageSize || DEFAULT_VALUE_LIST.PAGE_SIZE),
+            sortBy: req.query.sortBy as string || DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
+            searchNameTerm: req.query.searchNameTerm as string || "",
+            sortDirection: req.query.sortDirection as string || DEFAULT_VALUE_LIST.SORT_DIRECTION
         }
-      const posts = await blogService.getAllBlogPosts(req.params.id,query)
-        res.status(HTTP_STATUSES.OK200).send(postModels(posts))
-
+        const posts = await blogService.getAllBlogPosts(req.params.id, query)
+        res.status(HTTP_STATUSES.OK200).send(posts)
     },
 
-   async createBlog(req: Request, res: Response){
+    async createBlog(req: Request, res: Response) {
         const newBlog = await blogService.createBlog(req.body)
-        res.status(HTTP_STATUSES.CREATED_201).send(blogModels(newBlog))
+        res.status(HTTP_STATUSES.CREATED_201).send(newBlog)
     },
 
-    async createPostInBlog(req: Request, res: Response){
-        const newPost = await blogService.createPostInBlog(req.params.id ,req.body)
-        res.status(HTTP_STATUSES.CREATED_201).send(postModels(newPost))
+    async createPostInBlog(req: Request, res: Response) {
+        const newPost = await blogService.createPostInBlog(req.params.id, req.body)
+        res.status(HTTP_STATUSES.CREATED_201).send(newPost)
     },
 
-    async changeBlog(req: Request, res: Response){
+    async changeBlog(req: Request, res: Response) {
         const isChangeBlog = await blogService.changeBlog(req.params.id, req.body)
         if (isChangeBlog) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
@@ -66,7 +63,7 @@ export const blogController = {
         res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
     },
 
-    async deleteBlog(req: Request, res: Response){
+    async deleteBlog(req: Request, res: Response) {
         const isDeleted = await blogService.deleteBlog(req.params.id)
         if (isDeleted) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)

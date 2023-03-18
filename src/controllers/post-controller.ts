@@ -23,6 +23,7 @@ export const postController = {
        const posts = await postService.getAllPosts(query)
        res.status(HTTP_STATUSES.OK200).send(posts)
     },
+
     async getPostById(req: Request, res: Response){
         const findPost = await postService.getPostById(req.params.id)
         if (findPost) {
@@ -31,19 +32,21 @@ export const postController = {
             res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
+
     async createPost(req: Request, res: Response){
         const newPost = await postService.createPost(req.body)
         res.status(HTTP_STATUSES.CREATED_201).send(newPost)
     },
+
     async  changePost(req: Request, res: Response){
         const isChangePost = await postService.changePost(req.params.id, req.body)
-        console.log('isChangePost', isChangePost)
         if (isChangePost) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {
             res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
+
     async deletePost(req: Request, res: Response){
         const isDeleted = await postService.deletePost(req.params.id)
         if (isDeleted) {

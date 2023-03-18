@@ -1,8 +1,8 @@
-import {BlogType} from "../types";
+import {BlogResponseType} from "../types";
 
 
-export const blogModels = (blogs: any): any => {
-    const blogConverter = (blog: BlogType) => {
+export const blogModels = (blogs: BlogResponseType | BlogResponseType[]): BlogResponseType | BlogResponseType[] => {
+    const blogConverter = (blog: BlogResponseType) => {
         return {
             id: blog.id,
             name: blog.name,
@@ -13,8 +13,8 @@ export const blogModels = (blogs: any): any => {
         }
     }
 
-    if (Array.isArray(blogs.items)) {
-        return {...blogs, items: blogs.items.map((bl: BlogType) => blogConverter(bl))}
+    if (Array.isArray(blogs)) {
+        return blogs.map((bl: BlogResponseType) => blogConverter(bl))
     }
     return blogConverter(blogs)
 }

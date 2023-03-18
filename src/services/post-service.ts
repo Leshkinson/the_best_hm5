@@ -6,7 +6,7 @@ import {postModels} from "../models/post-models";
 
 
 export const postService = {
-    async getAllPosts(query: QueryForBlogsType):Promise<ResponseTypeWithPages<PostResponseType>> {
+    async getAllPosts(query: QueryForBlogsType): Promise<ResponseTypeWithPages<PostResponseType>> {
         const {pageNumber, pageSize} = query
         const filter: any = {}
         const totalCount = await postRepository.getTotalCount(filter)
@@ -32,7 +32,7 @@ export const postService = {
 
     async createPost(post: PostRequestType): Promise<PostResponseType> {
         const findBlog = await blogService.getBlogById(post.blogId)
-        const newPost = {
+        const newPost: PostResponseType = {
             id: (+(new Date())).toString(),
             title: post.title,
             shortDescription: post.shortDescription,
@@ -46,7 +46,7 @@ export const postService = {
         return postModels(newPost) as PostResponseType
     },
 
-    async changePost(id: string, post: PostResponseType):Promise<boolean> {
+    async changePost(id: string, post: PostResponseType): Promise<boolean> {
         const {title, blogId, content, shortDescription} = post
         const findBlog = await blogService.getBlogById(post.blogId)
         const filter = {id}

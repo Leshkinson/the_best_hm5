@@ -1,10 +1,19 @@
 import {blogRepository} from "../repositories/blog-repository";
-import {BlogType, PostType, QueryForBlogsType} from "../types";
+import {
+    BlogResponseType,
+    BlogType,
+    PostResponseType,
+    PostType,
+    QueryForBlogsType,
+    ResponseTypeWithPages
+} from "../types";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 import {postRepository} from "../repositories/post-repository";
+import {blogModels} from "../models/blog-models";
+import {postModels} from "../models/post-models";
 
 export const blogService = {
-    async getBlogs(query: QueryForBlogsType) {
+    async getBlogs(query: QueryForBlogsType):Promise<ResponseTypeWithPages<BlogResponseType>> {
         const {pageNumber, pageSize, searchNameTerm} = query
         const filter: any = {}
         const search = searchNameTerm?.toString()
@@ -13,36 +22,42 @@ export const blogService = {
         }
         const totalCount = await blogRepository.getTotalCount(filter)
         const [sort, skip, limit] = await getSortSkipLimit(query)
+        const blogs = await blogRepository.getAllBlogs(filter, sort, skip, +limit)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: await blogRepository.getAllBlogs(filter, sort, skip, +limit)
+            items: blogModels(blogs) as BlogResponseType[]
         }
     },
 
     async getBlogById(id: string) {
         const filter = {id: id}
-        return await blogRepository.getBlogById(filter)
+        const blog = await blogRepository.getBlogById(filter)
+        if (blog) {
+            return blogModels(blog)
+        }
+        return null
     },
 
-    async getAllBlogPosts(id: string, query: QueryForBlogsType) {
+    async getAllBlogPosts(id: string, query: QueryForBlogsType):Promise<ResponseTypeWithPages<PostResponseType>> {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const filter: any = {blogId : id}
+        const filter: any = {blogId: id}
         const totalCount = await postRepository.getTotalCount(filter)
+        const posts = await postRepository.getAllBlogPosts(filter, sort, skip, +limit)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: await postRepository.getAllBlogPosts(filter, sort, skip, +limit)
+            items: postModels(posts) as PostResponseType[]
         }
     },
 
-    async createBlog(blog: BlogType) {
-        const newBlog = {
+    async createBlog(blog: BlogType): Promise<BlogResponseType> {
+        const newBlog: BlogResponseType = {
             id: (+(new Date())).toString(),
             name: blog.name,
             description: blog.description,
@@ -51,12 +66,12 @@ export const blogService = {
             isMembership: false
         }
         await blogRepository.createBlog(newBlog)
-        return newBlog
+        return blogModels(newBlog) as BlogResponseType
     },
 
-    async createPostInBlog(id: string, post : PostType){
+    async createPostInBlog(id: string, post: PostType): Promise<PostType> {
         const findBlog = await blogService.getBlogById(id)
-        const newPost = {
+        const newPost: PostResponseType = {
             id: (+(new Date())).toString(),
             title: post.title,
             shortDescription: post.shortDescription,
@@ -66,14 +81,13 @@ export const blogService = {
             blogName: findBlog.name,
             createdAt: new Date().toISOString()
         }
-        console.log('req.body',newPost)
         await postRepository.createPost(newPost)
-        return newPost
+        return postModels(newPost) as PostType
     },
 
-    async changeBlog(id: string, blog: BlogType): Promise<boolean> {
+    async changeBlog(id: string, blog: BlogResponseType): Promise<boolean> {
         const {name, description, websiteUrl} = blog
-        const updateBLog = {$set: {name, description, websiteUrl}} as { $set: BlogType }
+        const updateBLog = {$set: {name, description, websiteUrl}} as { $set: BlogResponseType }
         const filter = {id: id}
         return await blogRepository.changeBlog(filter, updateBLog)
     },

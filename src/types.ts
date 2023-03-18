@@ -33,15 +33,14 @@ export type PostResponseType = PostType & {
     createdAt: string
 }
 
-
-
-
-
-export type BlogType = {
-    id: string
+export  type BlogType = {
     name: string
     description: string
     websiteUrl: string
+}
+
+export type BlogResponseType = BlogType & {
+    id: string
     isMembership: boolean
     createdAt: string
 }
