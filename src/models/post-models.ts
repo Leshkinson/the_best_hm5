@@ -1,8 +1,8 @@
-import {PostType} from "../types";
+import {PostResponseType} from "../types";
 
 
 export const postModels = (posts: any): any => {
-    const postConverter = (post:PostType) => {
+    const postConverter = (post:PostResponseType) => {
         return {
             id: post.id,
             title: post.title,
@@ -15,7 +15,7 @@ export const postModels = (posts: any): any => {
     }
 
     if (Array.isArray(posts.items)){
-        return {...posts, items: posts.items.map((ps: PostType) => postConverter(ps))}
+        return {...posts, items: posts.items.map((ps: PostResponseType) => postConverter(ps))}
     }
     return postConverter(posts)
 }

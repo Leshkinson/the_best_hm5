@@ -1,7 +1,7 @@
 import {BlogType} from "../types";
 
 
-export const blogsModels = (blogs: any): any => {
+export const blogModels = (blogs: any): any => {
     const blogConverter = (blog: BlogType) => {
         return {
             id: blog.id,

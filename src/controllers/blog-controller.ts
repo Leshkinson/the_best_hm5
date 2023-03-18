@@ -2,7 +2,7 @@ import {blogService} from "../services/blog-service";
 import {Request, Response} from "express";
 import {DefaultValueListType} from "../types";
 import {HTTP_STATUSES} from "../http_statuses";
-import {blogsModels} from "../models/blogs-models";
+import {blogModels} from "../models/blog-models";
 import {postModels} from "../models/post-models";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
@@ -22,13 +22,13 @@ export const blogController = {
             sortDirection : req.query.sortDirection as string ||  DEFAULT_VALUE_LIST.SORT_DIRECTION
         }
         const blogs =  await blogService.getBlogs(query)
-        res.status(HTTP_STATUSES.OK200).send(blogsModels(blogs))
+        res.status(HTTP_STATUSES.OK200).send(blogModels(blogs))
     },
 
    async getBlogById(req: Request, res: Response){
         const findBlog = await blogService.getBlogById(req.params.id)
         if (findBlog) {
-            res.status(HTTP_STATUSES.OK200).send(blogsModels(findBlog))
+            res.status(HTTP_STATUSES.OK200).send(blogModels(findBlog))
         } else {
             res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
@@ -49,7 +49,7 @@ export const blogController = {
 
    async createBlog(req: Request, res: Response){
         const newBlog = await blogService.createBlog(req.body)
-        res.status(HTTP_STATUSES.CREATED_201).send(blogsModels(newBlog))
+        res.status(HTTP_STATUSES.CREATED_201).send(blogModels(newBlog))
     },
 
     async createPostInBlog(req: Request, res: Response){

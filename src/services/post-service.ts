@@ -1,5 +1,5 @@
 import {postRepository} from "../repositories/post-repository";
-import {DefaultValueListType, PostType, QueryForBlogsType} from "../types";
+import {DefaultValueListType, PostResponseType, QueryForBlogsType} from "../types";
 import {blogService} from "./blog-service";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 
@@ -25,11 +25,11 @@ export const postService = {
             items: await postRepository.getAllPosts(filter, sort, skip, +limit)
         }
     },
-    async getPostById(id: string): Promise<PostType | null> {
+    async getPostById(id: string): Promise<PostResponseType | null> {
         const filter = {id: id}
         return await postRepository.getPostById(filter)
     },
-    async createPost(post: PostType) {
+    async createPost(post: PostResponseType) {
         const findBlog = await blogService.getBlogById(post.blogId)
         const newPost = {
             id: (+(new Date())).toString(),
@@ -44,7 +44,7 @@ export const postService = {
         await postRepository.createPost(newPost)
         return newPost
     },
-    async changePost(id:string, post: PostType) {
+    async changePost(id:string, post: PostResponseType) {
         const {title, blogId, content, shortDescription} = post
         const findBlog = await blogService.getBlogById(post.blogId)
         const filter = {id}
@@ -57,7 +57,7 @@ export const postService = {
                 content,
                 shortDescription
             }
-        } as {$set : PostType}
+        } as {$set : PostResponseType}
         return await postRepository.changePost(filter, update)
     },
    async deletePost(id: string):Promise<boolean>{

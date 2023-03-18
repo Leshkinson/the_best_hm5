@@ -4,7 +4,7 @@ import {HTTP_STATUSES} from "../src/http_statuses";
 import {blogRepository} from "../src/repositories/blog-repository";
 import {DefaultValueListType} from "../src/types";
 import {blogService} from "../src/services/blog-service";
-import {blogsModels} from "../src/models/blogs-models";
+import {blogModels} from "../src/models/blog-models";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
     FIELD_FOR_SORT: "createdAt",
@@ -93,7 +93,7 @@ describe('/test_blogs_path_2', () => {
             //@ts-ignore
             .get('/blogs/' + firstElement.id)
             //@ts-ignore
-            .expect(HTTP_STATUSES.OK200, blogsModels({...firstElement}))
+            .expect(HTTP_STATUSES.OK200, blogModels({...firstElement}))
     })
 
     it('PUT, success trying to change blog', async () => {

@@ -1,3 +1,40 @@
+export type UserType = {
+    login: string,
+    email: string
+}
+
+export type UserRequestType = UserType & {
+    password: string
+}
+
+export type UserResponseType = UserType & {
+    id: string,
+    createdAt: string
+}
+
+export type UserResponseFromDBType = UserResponseType & {
+    hash: string
+}
+
+export type InitPostType = {
+    title: string,
+    shortDescription: string,
+    content: string
+}
+
+export type PostRequestType = InitPostType & {
+    blogId: string
+}
+
+export type PostResponseType = InitPostType & {
+    id: string
+    blogId: string
+    blogName: string
+    createdAt: string
+}
+
+
+
 export type BlogType = {
     id: string
     name: string
@@ -7,27 +44,15 @@ export type BlogType = {
     createdAt: string
 }
 
-export type InitPostType = {
-    title: string,
-    shortDescription: string,
-    content: string
-}
-export type UserType = {
-    id: string,
-    login: string,
-    email: string,
-    createdAt: string
-}
 
-export type PostType = InitPostType & {
-    id: string
-    blogId: string
-    blogName: string
-    createdAt: string
-}
+
+
+
+
+
 
 export type QueryForBlogsType = {
-    pageNumber : number
+    pageNumber: number
     pageSize: number
     sortBy: string
     sortDirection: string
@@ -35,10 +60,10 @@ export type QueryForBlogsType = {
 }
 
 export type DefaultValueListType = {
-    FIELD_FOR_SORT : string
-    SORT_DIRECTION : string
-    PAGE_NUMBER : number
-    PAGE_SIZE : number
+    FIELD_FOR_SORT: string
+    SORT_DIRECTION: string
+    PAGE_NUMBER: number
+    PAGE_SIZE: number
 }
 
 export type ResponseTypeWithPages<I> = {
