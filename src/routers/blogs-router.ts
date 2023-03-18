@@ -1,8 +1,10 @@
 import {Router} from "express";
-import {blogValidations, checkBlogId, createPostByBlogValidations} from "../validator/validators";
+import { checkBlogId} from "../validators/generalValidation";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authorizationGuard} from "../middleware/authorization-guard";
 import {blogController} from "../controllers/blog-controller";
+import {createPostByBlogValidations} from "../validators/post-validation";
+import {blogValidations} from "../validators/blog-validation";
 
 export const blogsRouter = Router({})
 

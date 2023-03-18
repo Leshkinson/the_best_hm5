@@ -18,7 +18,7 @@ export type UserResponseFromDBType = UserResponseType & {
 
 export type PostType = {
     title: string,
-    shortDescription: string,
+    shortDescription: string
     content: string
 }
 
@@ -43,6 +43,11 @@ export type BlogResponseType = BlogType & {
     id: string
     isMembership: boolean
     createdAt: string
+}
+
+export type AuthType = {
+    loginOrEmail: string
+    password: string
 }
 
 export type QueryForBlogsType = {

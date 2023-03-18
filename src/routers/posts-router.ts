@@ -1,8 +1,9 @@
 import {Router} from "express";
-import {checkPostId, postValidations} from "../validator/validators";
+import {checkPostId} from "../validators/generalValidation";
 import {inputValidationMiddleware} from "../middleware/input-validation-middleware";
 import {authorizationGuard} from "../middleware/authorization-guard";
 import {postController} from "../controllers/post-controller";
+import {postValidations} from "../validators/post-validation";
 
 
 

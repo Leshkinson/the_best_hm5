@@ -18,6 +18,7 @@ export const userService = {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
         const filter: any = {}
+//        $or: [ { quantity: { $lt: 20 } }, { price: 10 } ]
         const totalCount = await userRepository.getTotalCount(filter)
         const users = await userRepository.getAllUsers(filter, sort as Sort, +skip, +limit)
         return {
