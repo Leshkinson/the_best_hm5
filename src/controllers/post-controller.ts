@@ -11,6 +11,7 @@ const DEFAULT_VALUE_LIST: DefaultValueListType = {
 }
 
 export const postController = {
+
    async getAllPost(req: Request, res: Response){
        const query =  {
            pageNumber : Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),

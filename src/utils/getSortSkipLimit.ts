@@ -1,9 +1,10 @@
 import {QueryForBlogsType} from "../types";
+import {Sort} from "mongodb";
 
-export const getSortSkipLimit = async (query: QueryForBlogsType) => {
+export const getSortSkipLimit = async (query: QueryForBlogsType):Promise<(number | Sort)[]> => {
     const sortBy = query?.sortBy.toString()
     const sortDirection = query?.sortDirection
-    const sort = {[sortBy]: sortDirection === "asc" ? 1 : -1}
+    const sort = {[sortBy]: sortDirection === "asc" ? 1 : -1} as Sort
     const pageNumber = query?.pageNumber
     const limit = query?.pageSize
     const skip: number = (+pageNumber - 1) * +limit

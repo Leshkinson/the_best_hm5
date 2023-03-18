@@ -1,9 +1,10 @@
 import {PostResponseType} from "../types";
 import {postCollections} from "../../mongoDB";
+import {Sort} from "mongodb";
 
 export const postRepository = {
 
-    async getAllPosts(filter: any, sort: any, skip: any, limit: number): Promise<PostResponseType[]> {
+    async getAllPosts(filter: any, sort: Sort, skip: number, limit: number): Promise<PostResponseType[]> {
         return postCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()
     },
 
@@ -15,7 +16,7 @@ export const postRepository = {
         return await postCollections.countDocuments(filter)
     },
 
-    async getAllBlogPosts(filter: any, sort: any, skip: any, limit: number): Promise<PostResponseType[]> {
+    async getAllBlogPosts(filter: any, sort: Sort, skip: number, limit: number): Promise<PostResponseType[]> {
         return await postCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()
     },
 

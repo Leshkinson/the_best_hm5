@@ -3,15 +3,16 @@ import {PostRequestType, PostResponseType, QueryForBlogsType, ResponseTypeWithPa
 import {blogService} from "./blog-service";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 import {postModels} from "../models/post-models";
-
+import {Sort} from "mongodb";
 
 export const postService = {
+
     async getAllPosts(query: QueryForBlogsType): Promise<ResponseTypeWithPages<PostResponseType>> {
         const {pageNumber, pageSize} = query
         const filter: any = {}
         const totalCount = await postRepository.getTotalCount(filter)
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const posts = await postRepository.getAllPosts(filter, sort, skip, +limit)
+        const posts = await postRepository.getAllPosts(filter, sort as Sort, +skip, +limit)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
