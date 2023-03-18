@@ -81,7 +81,7 @@ describe('/test_blogs_path_1', () => {
         await request(app)
             .delete('/blogs/' + 111)
             .auth('admin', 'qwerty', {type: "basic"})
-            .expect(HTTP_STATUSES.NOT_FOUND)
+            .expect(HTTP_STATUSES.NOT_FOUND_404)
     })
 
 
@@ -89,8 +89,6 @@ describe('/test_blogs_path_1', () => {
 describe('/test_blogs_path_2', () => {
 
     it('GET, try should return blog by id', async () => {
-        // arrBlog = await blogService.getBlogs(query)
-        // firstElement = await arrBlog.items[0]
         await request(app)
             //@ts-ignore
             .get('/blogs/' + firstElement.id)
@@ -103,7 +101,7 @@ describe('/test_blogs_path_2', () => {
             .put('/blogs/' + firstElement.id)
             .auth('admin', 'qwerty', {type: "basic"})
             .send({...testBlogData, name: "ChangeName"})
-            .expect(HTTP_STATUSES.NO_CONTENT)
+            .expect(HTTP_STATUSES.NO_CONTENT_204)
     })
 
 
@@ -111,6 +109,6 @@ describe('/test_blogs_path_2', () => {
         await request(app)
             .delete('/blogs/' + firstElement.id)
             .auth('admin', 'qwerty', {type: "basic"})
-            .expect(HTTP_STATUSES.NO_CONTENT)
+            .expect(HTTP_STATUSES.NO_CONTENT_204)
     })
 })

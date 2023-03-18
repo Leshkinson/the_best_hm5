@@ -1,6 +1,6 @@
 import {MongoClient} from "mongodb";
 import dotenv from 'dotenv'
-import {BlogType, PostType} from "./src/types";
+import {BlogType, PostType, UserType} from "./src/types";
 
 dotenv.config()
 
@@ -9,6 +9,7 @@ const client =  new MongoClient(mongoURi)
 const myDB = process.env.npm_lifecycle_script !== "jest"  ?  client.db("myDB") : client.db("myTest")
 export const postCollections = myDB.collection<PostType>("posts")
 export const blogCollections = myDB.collection<BlogType>("blogs")
+export const userCollections = myDB.collection<UserType>("users")
 
 export async function runDB() {
     try {

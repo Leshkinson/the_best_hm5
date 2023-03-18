@@ -64,7 +64,7 @@ describe('/test_posts_path_1', () => {
             .put('/posts/' + 111)
             .auth('admin', 'qwerty', {type: "basic"})
             .send(testNewPost)
-            .expect(HTTP_STATUSES.NOT_FOUND)
+            .expect(HTTP_STATUSES.NOT_FOUND_404)
     })
 
     it('PUT, trying to change post unauthorized', async () => {
@@ -151,7 +151,7 @@ describe('test_posts_path_3', () => {
             .delete('/posts/' + 111)
             .auth('admin', 'qwerty', {type: "basic"})
             .send(testNewPost)
-            .expect(HTTP_STATUSES.NOT_FOUND)
+            .expect(HTTP_STATUSES.NOT_FOUND_404)
     })
 })
 
@@ -161,12 +161,12 @@ describe('test_post_path_4', () => {
             .delete('/posts/' + createdPost.id)
             .auth('admin', 'qwerty', {type: "basic"})
             .send(testNewPost)
-            .expect(HTTP_STATUSES.NO_CONTENT)
+            .expect(HTTP_STATUSES.NO_CONTENT_204)
     })
     it('DELETE, successful remove blog (in Post)', async () => {
         await request(app)
             .delete('/blogs/' + createdBlog.id)
             .auth('admin', 'qwerty', {type: "basic"})
-            .expect(HTTP_STATUSES.NO_CONTENT)
+            .expect(HTTP_STATUSES.NO_CONTENT_204)
     })
 })

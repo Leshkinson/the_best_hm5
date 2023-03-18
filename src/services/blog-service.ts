@@ -1,5 +1,5 @@
 import {blogRepository} from "../repositories/repository-blogs";
-import {BlogType, InitBlogType, QueryForBlogsType} from "../types";
+import {BlogType, InitPostType, QueryForBlogsType} from "../types";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 import {repositoryPost} from "../repositories/repository-posts";
 
@@ -54,7 +54,7 @@ export const blogService = {
         return newBlog
     },
 
-    async createPostInBlog(id: string, post : InitBlogType){
+    async createPostInBlog(id: string, post : InitPostType){
         const findBlog = await blogService.getBlogById(id)
         const newPost = {
             id: (+(new Date())).toString(),

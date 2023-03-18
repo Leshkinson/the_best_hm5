@@ -38,7 +38,7 @@ const blogIdValidation = body('blogId')
 export const checkBlogId = async (req: Request, res: Response, next: NextFunction) =>{
     const isHaveBlog = await blogService.getBlogById(req.params.id)
     if(!isHaveBlog){
-       res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+       res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         return
     }
     next()
@@ -47,7 +47,7 @@ export const checkBlogId = async (req: Request, res: Response, next: NextFunctio
 
 export const checkPostId = async (req: Request, res: Response, next: NextFunction) =>{
     const isHaveId = await servicePost.getPostById(req.params.id)
-    isHaveId ? next() :  res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+    isHaveId ? next() :  res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
 }
 
 const nameValidation = body('name')

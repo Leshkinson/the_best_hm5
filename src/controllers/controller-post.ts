@@ -29,7 +29,7 @@ export const controllerPost = {
         if (findPost) {
             res.status(HTTP_STATUSES.OK200).send(postModels(findPost))
         } else {
-            res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
     async createPost(req: Request, res: Response){
@@ -39,17 +39,17 @@ export const controllerPost = {
     async  changePost(req: Request, res: Response){
         const isChangePost = await servicePost.changePost(req.params.id, req.body)
         if (isChangePost) {
-            res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+            res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {
-            res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
     async deletePost(req: Request, res: Response){
         const isDeleted = await servicePost.deletePost(req.params.id)
         if (isDeleted) {
-            res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+            res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {
-            res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     }
 }

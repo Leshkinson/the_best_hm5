@@ -30,7 +30,7 @@ export const blogController = {
         if (findBlog) {
             res.status(HTTP_STATUSES.OK200).send(blogsModels(findBlog))
         } else {
-            res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     },
 
@@ -60,18 +60,18 @@ export const blogController = {
     async changeBlog(req: Request, res: Response){
         const isChangeBlog = await blogService.changeBlog(req.params.id, req.body)
         if (isChangeBlog) {
-            res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+            res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
             return
         }
-        res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+        res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
     },
 
     async deleteBlog(req: Request, res: Response){
         const isDeleted = await blogService.deleteBlog(req.params.id)
         if (isDeleted) {
-            res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+            res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {
-            res.sendStatus(HTTP_STATUSES.NOT_FOUND)
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
         }
     }
 }

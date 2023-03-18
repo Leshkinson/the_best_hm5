@@ -7,11 +7,20 @@ export type BlogType = {
     createdAt: string
 }
 
-export type PostType = {
-    id: string
-    title: string
-    shortDescription: string
+export type InitPostType = {
+    title: string,
+    shortDescription: string,
     content: string
+}
+export type UserType = {
+    id: string,
+    login: string,
+    email: string,
+    createdAt: string
+}
+
+export type PostType = InitPostType & {
+    id: string
     blogId: string
     blogName: string
     createdAt: string
@@ -32,8 +41,10 @@ export type DefaultValueListType = {
     PAGE_SIZE : number
 }
 
-export type InitBlogType = {
-    title: string,
-    shortDescription: string,
-    content: string
+export type ResponseTypeWithPages<I> = {
+    pagesCount: number,
+    page: number,
+    pageSize: number,
+    totalCount: number,
+    items: I[]
 }

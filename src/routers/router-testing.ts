@@ -8,5 +8,5 @@ export const testingRouter = Router({})
     testingRouter.delete('/all-data', (req: Request, res: Response) => {
         blogRepository.deleteAllBlogs()
         repositoryPost.deleteAllPosts()
-        res.sendStatus(HTTP_STATUSES.NO_CONTENT)
+        res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
     })
