@@ -1,8 +1,8 @@
 import express, {Request, Response, Router} from "express";
 import bodyParser from "body-parser";
-import {postsRouter} from "./src/routers/router-posts";
-import {blogsRouter} from "./src/routers/router-blogs";
-import {testingRouter} from "./src/routers/router-testing";
+import {postsRouter} from "./src/routers/posts-router";
+import {blogsRouter} from "./src/routers/blogs-router";
+import {testingRouter} from "./src/routers/testing-router";
 
 export const app = express()
 

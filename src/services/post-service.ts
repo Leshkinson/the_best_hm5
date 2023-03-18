@@ -1,4 +1,4 @@
-import {repositoryPost} from "../repositories/repository-posts";
+import {postRepository} from "../repositories/post-repository";
 import {DefaultValueListType, PostType, QueryForBlogsType} from "../types";
 import {blogService} from "./blog-service";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
@@ -11,23 +11,23 @@ const DEFAULT_VALUE_LIST: DefaultValueListType = {
 }
 
 
-export const servicePost = {
+export const postService = {
     async getAllPosts(query: QueryForBlogsType) {
         const  {pageNumber, pageSize}  = query
         const filter: any = {}
-        const totalCount = await repositoryPost.getTotalCount(filter)
+        const totalCount = await postRepository.getTotalCount(filter)
         const [sort, skip, limit ] = await getSortSkipLimit(query)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: await repositoryPost.getAllPosts(filter, sort, skip, +limit)
+            items: await postRepository.getAllPosts(filter, sort, skip, +limit)
         }
     },
     async getPostById(id: string): Promise<PostType | null> {
         const filter = {id: id}
-        return await repositoryPost.getPostById(filter)
+        return await postRepository.getPostById(filter)
     },
     async createPost(post: PostType) {
         const findBlog = await blogService.getBlogById(post.blogId)
@@ -41,7 +41,7 @@ export const servicePost = {
             blogName: findBlog.name,
             createdAt: new Date().toISOString()
         }
-        await repositoryPost.createPost(newPost)
+        await postRepository.createPost(newPost)
         return newPost
     },
     async changePost(id:string, post: PostType) {
@@ -58,9 +58,9 @@ export const servicePost = {
                 shortDescription
             }
         } as {$set : PostType}
-        return await repositoryPost.changePost(filter, update)
+        return await postRepository.changePost(filter, update)
     },
    async deletePost(id: string):Promise<boolean>{
-        return await repositoryPost.deletePost(id)
+        return await postRepository.deletePost(id)
     }
 }

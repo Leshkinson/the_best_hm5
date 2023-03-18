@@ -1,7 +1,7 @@
 import {PostType} from "../types";
 import {postCollections} from "../../mongoDB";
 
-export const repositoryPost = {
+export const postRepository = {
 
     async getAllPosts(filter:any, sort: any, skip: any, limit: number): Promise<PostType[]> {
         return postCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()

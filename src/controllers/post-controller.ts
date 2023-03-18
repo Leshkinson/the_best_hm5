@@ -1,5 +1,5 @@
 import {Request, Response} from "express";
-import {servicePost} from "../services/service-post";
+import {postService} from "../services/post-service";
 import {HTTP_STATUSES} from "../http_statuses";
 import {postModels} from "../models/post-models";
 import {DefaultValueListType} from "../types";
@@ -11,7 +11,7 @@ const DEFAULT_VALUE_LIST: DefaultValueListType = {
     PAGE_SIZE: 10
 }
 
-export const controllerPost = {
+export const postController = {
    async getAllPost(req: Request, res: Response){
        const query =  {
            pageNumber : Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
@@ -21,11 +21,11 @@ export const controllerPost = {
            sortDirection : req.query.sortDirection as string ||  DEFAULT_VALUE_LIST.SORT_DIRECTION
        }
 
-       const posts = await servicePost.getAllPosts(query)
+       const posts = await postService.getAllPosts(query)
        res.status(HTTP_STATUSES.OK200).send(postModels(posts))
     },
     async getPostById(req: Request, res: Response){
-        const findPost = await servicePost.getPostById(req.params.id)
+        const findPost = await postService.getPostById(req.params.id)
         if (findPost) {
             res.status(HTTP_STATUSES.OK200).send(postModels(findPost))
         } else {
@@ -33,11 +33,11 @@ export const controllerPost = {
         }
     },
     async createPost(req: Request, res: Response){
-        const newPost = await servicePost.createPost(req.body)
+        const newPost = await postService.createPost(req.body)
         res.status(HTTP_STATUSES.CREATED_201).send(postModels(newPost))
     },
     async  changePost(req: Request, res: Response){
-        const isChangePost = await servicePost.changePost(req.params.id, req.body)
+        const isChangePost = await postService.changePost(req.params.id, req.body)
         if (isChangePost) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {
@@ -45,7 +45,7 @@ export const controllerPost = {
         }
     },
     async deletePost(req: Request, res: Response){
-        const isDeleted = await servicePost.deletePost(req.params.id)
+        const isDeleted = await postService.deletePost(req.params.id)
         if (isDeleted) {
             res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
         } else {

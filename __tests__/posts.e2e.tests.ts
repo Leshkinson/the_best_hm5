@@ -1,9 +1,9 @@
 import {app} from "../setting";
 import {HTTP_STATUSES} from "../src/http_statuses";
 import request from 'supertest'
-import {blogRepository} from "../src/repositories/repository-blogs";
-import {repositoryPost} from "../src/repositories/repository-posts";
-import {servicePost} from "../src/services/service-post";
+import {blogRepository} from "../src/repositories/blog-repository";
+import {postRepository} from "../src/repositories/post-repository";
+import {postService} from "../src/services/post-service";
 import {DefaultValueListType} from "../src/types";
 import {blogController} from "../src/controllers/blog-controller";
 import {blogService} from "../src/services/blog-service";
@@ -108,7 +108,7 @@ describe('test_posts_path_2', () => {
 
 describe('test_posts_path_3', () => {
     beforeAll(async () => {
-        await servicePost.getAllPosts(query).then((el) => {
+        await postService.getAllPosts(query).then((el) => {
             createdPost = el.items[0]
         })
     })

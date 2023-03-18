@@ -1,12 +1,12 @@
 import {Request, Response, Router} from "express";
-import {repositoryPost} from "../repositories/repository-posts";
+import {postRepository} from "../repositories/post-repository";
 import {HTTP_STATUSES} from "../http_statuses";
-import {blogRepository} from "../repositories/repository-blogs";
+import {blogRepository} from "../repositories/blog-repository";
 
 export const testingRouter = Router({})
 
     testingRouter.delete('/all-data', (req: Request, res: Response) => {
         blogRepository.deleteAllBlogs()
-        repositoryPost.deleteAllPosts()
+        postRepository.deleteAllPosts()
         res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
     })

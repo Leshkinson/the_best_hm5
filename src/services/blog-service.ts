@@ -1,7 +1,7 @@
-import {blogRepository} from "../repositories/repository-blogs";
+import {blogRepository} from "../repositories/blog-repository";
 import {BlogType, InitPostType, QueryForBlogsType} from "../types";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
-import {repositoryPost} from "../repositories/repository-posts";
+import {postRepository} from "../repositories/post-repository";
 
 export const blogService = {
     async getBlogs(query: QueryForBlogsType) {
@@ -31,13 +31,13 @@ export const blogService = {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
         const filter: any = {blogId : id}
-        const totalCount = await repositoryPost.getTotalCount(filter)
+        const totalCount = await postRepository.getTotalCount(filter)
         return {
             pagesCount: Math.ceil(totalCount / +pageSize),
             page: pageNumber,
             pageSize: pageSize,
             totalCount,
-            items: await repositoryPost.getAllBlogPosts(filter, sort, skip, +limit)
+            items: await postRepository.getAllBlogPosts(filter, sort, skip, +limit)
         }
     },
 
@@ -67,7 +67,7 @@ export const blogService = {
             createdAt: new Date().toISOString()
         }
         console.log('req.body',newPost)
-        await repositoryPost.createPost(newPost)
+        await postRepository.createPost(newPost)
         return newPost
     },
 
