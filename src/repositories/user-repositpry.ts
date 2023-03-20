@@ -18,5 +18,14 @@ export const userRepository = {
 
     async createUser(newUser: any): Promise<void> {
         await userCollections.insertOne(newUser)
+    },
+
+    async deleteUser(filter: any):Promise<boolean>{
+        const result = await userCollections.deleteOne(filter)
+        return result.deletedCount === 1
+    },
+
+    async deleteAllUser():Promise<void>{
+        await userCollections.deleteMany({})
     }
 }

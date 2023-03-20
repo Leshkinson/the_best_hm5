@@ -28,6 +28,15 @@ export const userController = {
     async createUser(req: Request, res: Response) {
         const newUser = await userService.createUser(req.body)
         res.status(HTTP_STATUSES.CREATED_201).send(newUser)
+    },
+
+    async deleteUser(req: Request, res: Response){
+      const isDeleted = await userService.deleteUser(req.params.id)
+        if (isDeleted) {
+            res.sendStatus(HTTP_STATUSES.NO_CONTENT_204)
+        } else {
+            res.sendStatus(HTTP_STATUSES.NOT_FOUND_404)
+        }
     }
 
 }

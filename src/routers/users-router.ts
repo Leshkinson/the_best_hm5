@@ -9,3 +9,4 @@ userRouter.get('/', userController.getAllUsers)
 //-------------------POST---------------//
 userRouter.post('/', userController.createUser)
 //-------------------DELETE---------------//
+userRouter.delete('/:id', userController.deleteUser)

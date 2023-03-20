@@ -54,5 +54,10 @@ export const userService = {
         }
         await userRepository.createUser({...newUser, hash, salt} as UserResponseFromDBType)
         return newUser
+    },
+
+    async deleteUser(id:string):Promise<boolean>{
+        const filter = {id}
+     return await  userRepository.deleteUser(filter)
     }
 }
