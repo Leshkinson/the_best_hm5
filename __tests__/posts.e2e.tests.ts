@@ -156,6 +156,7 @@ describe('test_posts_path_3', () => {
 })
 
 describe('test_post_path_4', () => {
+
     it('DELETE, successful remove posts', async () => {
         await request(app)
             .delete('/posts/' + createdPost.id)

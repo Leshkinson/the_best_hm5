@@ -11,19 +11,17 @@ import {createId} from "../utils/createId";
 import bcrypt from "bcrypt";
 import {userModels} from "../models/user-models";
 import {Sort} from "mongodb";
+import {getRegexFilter} from "../utils/getRegexFilter";
+
+
+
 
 export const userService = {
 
     async getAllUsers(query: QueryForUsersType): Promise<ResponseTypeWithPages<UserResponseType>> {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const filter: any = {}
-        if (query.searchEmailTerm && query.searchLoginTerm) {
-            filter.$or = [{login: {$regex: new RegExp(`${query.searchLoginTerm}`, 'i')}}, {email: {$regex: new RegExp(`${query.searchEmailTerm}`, 'i')}}]
-        } else if (query.searchEmailTerm || query.searchLoginTerm) {
-            const field = query.searchEmailTerm ? "email" : "login"
-            filter[field] = {$regex: new RegExp(`${query.searchEmailTerm || query.searchLoginTerm}`, 'i')}
-        }
+        const filter: any = getRegexFilter({email: query.searchEmailTerm, login: query.searchLoginTerm}, true)
         const totalCount = await userRepository.getTotalCount(filter)
         const users = await userRepository.getAllUsers(filter, sort as Sort, +skip, +limit)
         return {
@@ -56,8 +54,8 @@ export const userService = {
         return newUser
     },
 
-    async deleteUser(id:string):Promise<boolean>{
+    async deleteUser(id: string): Promise<boolean> {
         const filter = {id}
-     return await  userRepository.deleteUser(filter)
+        return await userRepository.deleteUser(filter)
     }
 }
