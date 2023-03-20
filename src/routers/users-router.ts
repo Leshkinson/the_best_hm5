@@ -8,5 +8,4 @@ export const userRouter = Router({})
 userRouter.get('/', userController.getAllUsers)
 //-------------------POST---------------//
 userRouter.post('/', userController.createUser)
-
 //-------------------DELETE---------------//

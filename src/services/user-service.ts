@@ -17,8 +17,12 @@ export const userService = {
     async getAllUsers(query: QueryForUsersType): Promise<ResponseTypeWithPages<UserResponseType>> {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const filter: any = {
-            $or: [{login: {$regex: query.searchLoginTerm}}, {email: {$regex: query.searchEmailTerm}}]
+        const filter: any = {}
+        if (query.searchEmailTerm && query.searchLoginTerm) {
+            filter.$or = [{login: {$regex: query.searchLoginTerm}}, {email: {$regex: query.searchEmailTerm}}]
+        } else if (query.searchEmailTerm || query.searchLoginTerm) {
+            const field = query.searchEmailTerm ? "email" : "login"
+            filter[field] = {$regex: new RegExp(`${query.searchEmailTerm || query.searchLoginTerm}`, 'i')}
         }
         const totalCount = await userRepository.getTotalCount(filter)
         const users = await userRepository.getAllUsers(filter, sort as Sort, +skip, +limit)
@@ -31,11 +35,11 @@ export const userService = {
         }
     },
 
-    async getUserByLoginOrEmail(loginOrEmail:string):Promise<UserResponseFromDBType|null>{
+    async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserResponseFromDBType | null> {
         const filter: any = {
             $or: [{login: loginOrEmail}, {email: loginOrEmail}]
         }
-      return await userRepository.getUserByLoginOrEmail(filter)
+        return await userRepository.getUserByLoginOrEmail(filter)
     },
 
     async createUser(user: UserRequestType): Promise<UserResponseType> {
