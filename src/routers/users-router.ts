@@ -12,4 +12,4 @@ userRouter.get('/', userController.getAllUsers)
 //-------------------POST---------------//
 userRouter.post('/', authorizationGuard, userValidation, inputValidationMiddleware, userController.createUser)
 //-------------------DELETE---------------//
-userRouter.delete('/:id',userController.deleteUser)
+userRouter.delete('/:id',authorizationGuard, userController.deleteUser)
