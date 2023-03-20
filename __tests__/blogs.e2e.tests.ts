@@ -29,7 +29,6 @@ let firstElement: any
 
 
 describe('/test_blogs_path_1', () => {
-
     it('GET, should return blogs[]', async () => {
         await request(app)
             .get('/blogs')

@@ -1,11 +1,8 @@
 import {app} from "../setting";
 import {HTTP_STATUSES} from "../src/http_statuses";
 import request from 'supertest'
-import {blogRepository} from "../src/repositories/blog-repository";
-import {postRepository} from "../src/repositories/post-repository";
 import {postService} from "../src/services/post-service";
 import {DefaultValueListType} from "../src/types";
-import {blogController} from "../src/controllers/blog-controller";
 import {blogService} from "../src/services/blog-service";
 
 const testNewPost = {

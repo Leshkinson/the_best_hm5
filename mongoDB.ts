@@ -6,7 +6,7 @@ dotenv.config()
 
 const mongoURi = "mongodb+srv://dimaaleks943:AdB7QJrdw9zyOLUY@cluster0.kv7bgcj.mongodb.net/?retryWrites=true&w=majority"
 const client =  new MongoClient(mongoURi)
-const myDB = process.env.npm_lifecycle_script !== "jest"  ?  client.db("myDB") : client.db("myTest")
+const myDB = process.env.npm_lifecycle_event !== "jest"  ?  client.db("myDB") : client.db("myTest")
 export const postCollections = myDB.collection<PostResponseType>("posts")
 export const blogCollections = myDB.collection<BlogResponseType>("blogs")
 export const userCollections = myDB.collection<UserResponseFromDBType>("users")

@@ -14,7 +14,7 @@ const passwordValidation = body('password')
 const emailValidation = body('email')
     .isString().withMessage('Invalid type')
     .trim()
-    .custom(value => emailPattern.test(value)).withMessage('Is not URL!')
+    .custom(value => emailPattern.test(value)).withMessage('Is not email!')
     .notEmpty().withMessage('Field must not be empty')
 
 

@@ -2,6 +2,7 @@ export const getFilter = (params: any, withRegex:boolean = false) => {
     const filter: any = {}
     const validParams:any = {}
     const filterCheck = (p: any) => !!p
+
     Object.keys(params).forEach((key) => {
         if (filterCheck(params[key])) validParams[key] = params[key];
     })
@@ -13,9 +14,10 @@ export const getFilter = (params: any, withRegex:boolean = false) => {
         })
     }
     if(arrKeys.length === 1) {
-        const singleKey  = arrKeys[0]
+        const singleKey = arrKeys[0]
         if(withRegex)   filter[singleKey] = {$regex: new RegExp(`${validParams[singleKey]}`, 'i')}
-        return {singleKey: validParams[singleKey]}
+        else filter[singleKey] = {singleKey: validParams[singleKey]
+        }
     }
      return filter
 }
