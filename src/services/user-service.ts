@@ -19,7 +19,7 @@ export const userService = {
         const [sort, skip, limit] = await getSortSkipLimit(query)
         const filter: any = {}
         if (query.searchEmailTerm && query.searchLoginTerm) {
-            filter.$or = [{login: {$regex: query.searchLoginTerm}}, {email: {$regex: query.searchEmailTerm}}]
+            filter.$or = [{login: {$regex: new RegExp(`${query.searchLoginTerm}`, 'i')}}, {email: {$regex: new RegExp(`${query.searchEmailTerm}`, 'i')}}]
         } else if (query.searchEmailTerm || query.searchLoginTerm) {
             const field = query.searchEmailTerm ? "email" : "login"
             filter[field] = {$regex: new RegExp(`${query.searchEmailTerm || query.searchLoginTerm}`, 'i')}

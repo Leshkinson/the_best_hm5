@@ -1,7 +1,5 @@
 import {body} from "express-validator";
 import {NextFunction, Request, Response} from "express";
-import {userRepository} from "../repositories/user-repositpry";
-import {Sort} from "mongodb";
 import {userService} from "../services/user-service";
 import bcrypt from "bcrypt";
 
