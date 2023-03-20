@@ -6,4 +6,4 @@ import {authValidation, checkIsValidUser} from "../validators/auth-validation";
 export const authRouter = Router({})
 
 //-------------------POST---------------//
-authRouter.post('/',authValidation, checkIsValidUser, inputValidationMiddleware, authController.authorization)
+authRouter.post('/', authValidation, checkIsValidUser, inputValidationMiddleware, authController.authorization)

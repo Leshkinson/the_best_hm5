@@ -1,5 +1,5 @@
 import {
-    QueryForBlogsType,
+    QueryForUsersType,
     ResponseTypeWithPages,
     UserRequestType,
     UserResponseFromDBType,
@@ -14,11 +14,12 @@ import {Sort} from "mongodb";
 
 export const userService = {
 
-    async getAllUsers(query: QueryForBlogsType):Promise<ResponseTypeWithPages<UserResponseType>> {
+    async getAllUsers(query: QueryForUsersType): Promise<ResponseTypeWithPages<UserResponseType>> {
         const {pageNumber, pageSize} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const filter: any = {}
-//        $or: [ { quantity: { $lt: 20 } }, { price: 10 } ]
+        const filter: any = {
+            $or: [{login: {$regex: query.searchLoginTerm}}, {email: {$regex: query.searchEmailTerm}}]
+        }
         const totalCount = await userRepository.getTotalCount(filter)
         const users = await userRepository.getAllUsers(filter, sort as Sort, +skip, +limit)
         return {
@@ -30,17 +31,24 @@ export const userService = {
         }
     },
 
-    async createUser(user: UserRequestType):Promise<UserResponseType> {
+    async getUserByLoginOrEmail(loginOrEmail:string):Promise<UserResponseFromDBType|null>{
+        const filter: any = {
+            $or: [{login: loginOrEmail}, {email: loginOrEmail}]
+        }
+      return await userRepository.getUserByLoginOrEmail(filter)
+    },
+
+    async createUser(user: UserRequestType): Promise<UserResponseType> {
         const id = createId()
         const salt = await bcrypt.genSalt(10)
-        const hash = await bcrypt.hash(id, salt)
-        const newUser:UserResponseType = {
+        const hash = await bcrypt.hash(user.password, salt)
+        const newUser: UserResponseType = {
             id,
             login: user.login,
             email: user.email,
             createdAt: new Date().toISOString(),
         }
-        await userRepository.createUser({...newUser, hash} as UserResponseFromDBType)
+        await userRepository.createUser({...newUser, hash, salt} as UserResponseFromDBType)
         return newUser
     }
 }

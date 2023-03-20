@@ -17,8 +17,9 @@ export const userController = {
             pageNumber: Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
             pageSize: Number(req.query.pageSize || DEFAULT_VALUE_LIST.PAGE_SIZE),
             sortBy: req.query.sortBy as string || DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
-            searchNameTerm: req.query.searchNameTerm as string || "",
-            sortDirection: req.query.sortDirection as string || DEFAULT_VALUE_LIST.SORT_DIRECTION
+            sortDirection: req.query.sortDirection as string || DEFAULT_VALUE_LIST.SORT_DIRECTION,
+            searchLoginTerm: req.query.searchLoginTerm as string || "",
+            searchEmailTerm: req.query.searchEmailTerm as string || ""
         }
         const users = await userService.getAllUsers(query)
         res.status(HTTP_STATUSES.OK200).send(users)

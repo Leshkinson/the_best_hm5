@@ -14,6 +14,7 @@ export type UserResponseType = UserType & {
 
 export type UserResponseFromDBType = UserResponseType & {
     hash: string
+    salt: string
 }
 
 export type PostType = {
@@ -50,12 +51,12 @@ export type AuthType = {
     password: string
 }
 
-export type QueryForBlogsType = {
-    pageNumber: number
-    pageSize: number
-    sortBy: string
-    sortDirection: string
+export type QueryForBlogsType = QueryPageType & {
     searchNameTerm: string
+}
+export type QueryForUsersType = QueryPageType & {
+    searchLoginTerm: string
+    searchEmailTerm: string
 }
 
 export type DefaultValueListType = {
@@ -71,4 +72,11 @@ export type ResponseTypeWithPages<I> = {
     pageSize: number,
     totalCount: number,
     items: I[]
+}
+
+export type QueryPageType = {
+    pageNumber: number
+    pageSize: number
+    sortBy: string
+    sortDirection: string
 }

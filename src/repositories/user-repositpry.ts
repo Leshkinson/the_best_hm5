@@ -4,17 +4,19 @@ import {UserResponseFromDBType} from "../types";
 
 export const userRepository = {
 
-    async getAllUsers(filter: any, sort: any, skip: any, limit: any):Promise<UserResponseFromDBType[]>{
-        return await userCollections.find({
-            $or: [ { login: {$regex: "Ki"} }, { email: {$regex: "Eg"} } ]
-        }).sort(sort).skip(skip).limit(limit).toArray()
+    async getAllUsers(filter: any, sort: any, skip: any, limit: any): Promise<UserResponseFromDBType[]> {
+        return await userCollections.find(filter).sort(sort).skip(skip).limit(limit).toArray()
     },
 
-    async getTotalCount(filter: any):Promise<number>{
+    async getUserByLoginOrEmail(filter:any): Promise<UserResponseFromDBType|null>{
+        return await userCollections.findOne(filter)
+    },
+
+    async getTotalCount(filter: any): Promise<number> {
         return await userCollections.countDocuments(filter)
     },
 
-    async createUser(newUser: any):Promise<void>{
+    async createUser(newUser: any): Promise<void> {
         await userCollections.insertOne(newUser)
     }
 }
