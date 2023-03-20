@@ -52,11 +52,11 @@ export type AuthType = {
 }
 
 export type QueryForBlogsType = QueryPageType & {
-    searchNameTerm: string
+    name: string
 }
 export type QueryForUsersType = QueryPageType & {
-    searchLoginTerm: string
-    searchEmailTerm: string
+    login: string
+    email: string
 }
 
 export type DefaultValueListType = {

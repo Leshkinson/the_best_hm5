@@ -1,4 +1,4 @@
-export const getRegexFilter = (params: any, withRegex:boolean = false) => {
+export const getFilter = (params: any, withRegex:boolean = false) => {
     const filter: any = {}
     const validParams:any = {}
     const filterCheck = (p: any) => !!p

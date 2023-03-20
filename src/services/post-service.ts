@@ -4,6 +4,7 @@ import {blogService} from "./blog-service";
 import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 import {postModels} from "../models/post-models";
 import {Sort} from "mongodb";
+import {createId} from "../utils/createId";
 
 export const postService = {
 
@@ -23,7 +24,7 @@ export const postService = {
     },
 
     async getPostById(id: string): Promise<PostResponseType | null> {
-        const filter = {id: id}
+        const filter = {id}
         const post = await postRepository.getPostById(filter)
         if (post) {
             return postModels(post) as PostResponseType
@@ -34,7 +35,7 @@ export const postService = {
     async createPost(post: PostRequestType): Promise<PostResponseType> {
         const findBlog = await blogService.getBlogById(post.blogId)
         const newPost: PostResponseType = {
-            id: (+(new Date())).toString(),
+            id: createId(),
             title: post.title,
             shortDescription: post.shortDescription,
             content: post.content,
@@ -65,6 +66,7 @@ export const postService = {
     },
 
     async deletePost(id: string): Promise<boolean> {
-        return await postRepository.deletePost(id)
+        const filter = {id}
+        return await postRepository.deletePost(filter)
     }
 }

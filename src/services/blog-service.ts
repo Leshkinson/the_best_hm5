@@ -12,16 +12,14 @@ import {getSortSkipLimit} from "../utils/getSortSkipLimit";
 import {postRepository} from "../repositories/post-repository";
 import {blogModels} from "../models/blog-models";
 import {postModels} from "../models/post-models";
+import {getFilter} from "../utils/getFilter";
+import {createId} from "../utils/createId";
 
 export const blogService = {
 
     async getBlogs(query: QueryForBlogsType):Promise<ResponseTypeWithPages<BlogResponseType>> {
-        const {pageNumber, pageSize, searchNameTerm} = query
-        const filter: any = {}
-        const search = searchNameTerm?.toString()
-        if (search) {
-            filter.name = {$regex: new RegExp(`${search}`, 'i')}
-        }
+        const {pageNumber, pageSize, name} = query
+        const filter: any =  getFilter({name}, true)
         const totalCount = await blogRepository.getTotalCount(filter)
         const [sort, skip, limit] = await getSortSkipLimit(query)
         const blogs = await blogRepository.getAllBlogs(filter, sort as Sort, +skip, +limit)
@@ -35,7 +33,7 @@ export const blogService = {
     },
 
     async getBlogById(id: string) {
-        const filter = {id: id}
+        const filter = {id}
         const blog = await blogRepository.getBlogById(filter)
         if (blog) {
             return blogModels(blog)
@@ -60,7 +58,7 @@ export const blogService = {
 
     async createBlog(blog: BlogType): Promise<BlogResponseType> {
         const newBlog: BlogResponseType = {
-            id: (+(new Date())).toString(),
+            id: createId(),
             name: blog.name,
             description: blog.description,
             websiteUrl: blog.websiteUrl,
@@ -74,7 +72,7 @@ export const blogService = {
     async createPostInBlog(id: string, post: PostType): Promise<PostType> {
         const findBlog = await blogService.getBlogById(id)
         const newPost: PostResponseType = {
-            id: (+(new Date())).toString(),
+            id: createId(),
             title: post.title,
             shortDescription: post.shortDescription,
             content: post.content,
@@ -90,12 +88,12 @@ export const blogService = {
     async changeBlog(id: string, blog: BlogResponseType): Promise<boolean> {
         const {name, description, websiteUrl} = blog
         const updateBLog = {$set: {name, description, websiteUrl}} as { $set: BlogResponseType }
-        const filter = {id: id}
+        const filter = {id}
         return await blogRepository.changeBlog(filter, updateBLog)
     },
 
     async deleteBlog(id: string): Promise<boolean> {
-        const filter = {id: id}
+        const filter = {id}
         return await blogRepository.deleteBlog(filter)
     }
 }

@@ -2,6 +2,7 @@ import {Request, Response} from "express";
 import {DefaultValueListType} from "../types";
 import {HTTP_STATUSES} from "../http_statuses";
 import {userService} from "../services/user-service";
+import {getPageQuery} from "../utils/getPageQuery";
 
 const DEFAULT_VALUE_LIST: DefaultValueListType = {
     FIELD_FOR_SORT: "createdAt",
@@ -14,12 +15,9 @@ export const userController = {
 
     async getAllUsers(req: Request, res: Response) {
         const query = {
-            pageNumber: Number(req.query.pageNumber || DEFAULT_VALUE_LIST.PAGE_NUMBER),
-            pageSize: Number(req.query.pageSize || DEFAULT_VALUE_LIST.PAGE_SIZE),
-            sortBy: req.query.sortBy as string || DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
-            sortDirection: req.query.sortDirection as string || DEFAULT_VALUE_LIST.SORT_DIRECTION,
-            searchLoginTerm: req.query.searchLoginTerm as string || "",
-            searchEmailTerm: req.query.searchEmailTerm as string || ""
+            ...getPageQuery(req.query, DEFAULT_VALUE_LIST),
+            login: req.query.searchLoginTerm as string || "",
+            email: req.query.searchEmailTerm as string || ""
         }
         const users = await userService.getAllUsers(query)
         res.status(HTTP_STATUSES.OK200).send(users)

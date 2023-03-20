@@ -11,7 +11,7 @@ import {createId} from "../utils/createId";
 import bcrypt from "bcrypt";
 import {userModels} from "../models/user-models";
 import {Sort} from "mongodb";
-import {getRegexFilter} from "../utils/getRegexFilter";
+import {getFilter} from "../utils/getFilter";
 
 
 
@@ -19,9 +19,9 @@ import {getRegexFilter} from "../utils/getRegexFilter";
 export const userService = {
 
     async getAllUsers(query: QueryForUsersType): Promise<ResponseTypeWithPages<UserResponseType>> {
-        const {pageNumber, pageSize} = query
+        const {pageNumber, pageSize, login, email} = query
         const [sort, skip, limit] = await getSortSkipLimit(query)
-        const filter: any = getRegexFilter({email: query.searchEmailTerm, login: query.searchLoginTerm}, true)
+        const filter: any = getFilter({email, login}, true)
         const totalCount = await userRepository.getTotalCount(filter)
         const users = await userRepository.getAllUsers(filter, sort as Sort, +skip, +limit)
         return {
@@ -34,9 +34,7 @@ export const userService = {
     },
 
     async getUserByLoginOrEmail(loginOrEmail: string): Promise<UserResponseFromDBType | null> {
-        const filter: any = {
-            $or: [{login: loginOrEmail}, {email: loginOrEmail}]
-        }
+        const filter: any = getFilter({login: loginOrEmail, email: loginOrEmail})
         return await userRepository.getUserByLoginOrEmail(filter)
     },
 

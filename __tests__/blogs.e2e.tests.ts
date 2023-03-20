@@ -16,7 +16,7 @@ const query =  {
     pageNumber :  DEFAULT_VALUE_LIST.PAGE_NUMBER,
     pageSize :   DEFAULT_VALUE_LIST.PAGE_SIZE,
     sortBy : DEFAULT_VALUE_LIST.FIELD_FOR_SORT,
-    searchNameTerm :  "",
+    name :  "",
     sortDirection :DEFAULT_VALUE_LIST.SORT_DIRECTION
 }
 
